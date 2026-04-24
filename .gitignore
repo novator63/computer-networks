@@ -3,3 +3,8 @@
 .oppbuildspec
 .project
 .oppfeaturestate
+/results
+/simulations/results
+.qtenvrc
+/out
+/computer-networks_dbg
