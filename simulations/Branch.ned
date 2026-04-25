@@ -1,6 +1,5 @@
 package simulations;
 
-import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.node.ethernet.EthernetSwitch;
 import inet.node.ethernet.Eth100M;
 import inet.node.inet.Router;
@@ -8,40 +7,57 @@ import inet.node.inet.StandardHost;
 
 network Branch
 {
-    parameters:
-        int numClients = default(5);   // пока упростим: 5 ПК на филиал
-        int numServers = default(1);   // потом будем менять для эксперимента
-        @display("i=device/lan-ring");
+    @display("i=device/lan-ring");
     gates:
         inout pppg[];
     submodules:
-        configurator: Ipv4NetworkConfigurator {
-            @display("p=60,50;is=s");
-        }
         router: Router {
-            @display("p=120,140");
+            @display("p=100,180");
         }
-        lanSwitch: EthernetSwitch {
-            @display("p=250,140");
+
+        mainSwitch: EthernetSwitch {
+            @display("p=240,180");
         }
-        client[numClients]: StandardHost {
-            @display("p=380,80,row,90");
+
+        localServer: StandardHost {
+            @display("p=420,300;i=device/server");
         }
-        server[numServers]: StandardHost {
-            @display("p=380,220,row,90");
+
+        office1: Office {
+            parameters:
+                numClients = 4;
+            @display("p=430,60");
         }
+
+        office2: Office {
+            parameters:
+                numClients = 4;
+            @display("p=430,140");
+        }
+
+        office3: Office {
+            parameters:
+                numClients = 4;
+            @display("p=430,220");
+        }
+
+        office4: Office {
+            parameters:
+                numClients = 3;
+            @display("p=430,380");
+        }
+
     connections:
         for i=0..sizeof(pppg)-1 {
             pppg[i] <--> router.pppg++;
         }
 
-        router.ethg++ <--> Eth100M <--> lanSwitch.ethg++;
+        router.ethg++ <--> Eth100M <--> mainSwitch.ethg++;
 
-        for i=0..numClients-1 {
-            lanSwitch.ethg++ <--> Eth100M <--> client[i].ethg++;
-        }
+        mainSwitch.ethg++ <--> Eth100M <--> localServer.ethg++;
 
-        for i=0..numServers-1 {
-            lanSwitch.ethg++ <--> Eth100M <--> server[i].ethg++;
-        }
+        office1.ethg++ <--> Eth100M <--> mainSwitch.ethg++;
+        office2.ethg++ <--> Eth100M <--> mainSwitch.ethg++;
+        office3.ethg++ <--> Eth100M <--> mainSwitch.ethg++;
+        office4.ethg++ <--> Eth100M <--> mainSwitch.ethg++;
 }

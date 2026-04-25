@@ -1,7 +1,6 @@
 package simulations;
 
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
-import inet.node.ethernet.Eth100M;
 import inet.node.inet.StandardHost;
 import inet.node.internetcloud.InternetCloud;
 
@@ -18,23 +17,14 @@ network Global
         }
 
         branch1: Branch {
-            parameters:
-                numClients = 5;
-                numServers = 1;
             @display("p=220,110");
         }
 
         branch2: Branch {
-            parameters:
-                numClients = 5;
-                numServers = 1;
             @display("p=220,240");
         }
 
         branch3: Branch {
-            parameters:
-                numClients = 5;
-                numServers = 1;
             @display("p=220,370");
         }
 
