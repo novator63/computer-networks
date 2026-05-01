@@ -1,18 +1,77 @@
 <?xml version="1.0"?>
-<OSPFASConfig xmlns:xsi="http://w3.org" xsi:schemaLocation="OSPF.xsd">
+<OSPFASConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="OSPF.xsd">
 
     <Area id="0.0.0.0">
         <AddressRange address="10.0.0.0" mask="255.0.0.0" status="Advertise" />
     </Area>
 
-    <Router name="Global.core" id="auto" RFC1583Compatible="true">
-        <PointToPointInterface ifName="ppp*" areaID="0.0.0.0" interfaceCost="10" />
-        <BroadcastInterface ifName="eth*" areaID="0.0.0.0" interfaceCost="100" />
+    <!-- ===================================================== -->
+    <!-- Core router                                           -->
+    <!-- core.ppp0 -> branch1                                 -->
+    <!-- core.ppp1 -> branch2                                 -->
+    <!-- core.ppp2 -> branch3                                 -->
+    <!-- core.ppp3 -> extServer                               -->
+    <!-- ===================================================== -->
+
+    <Router name="Global.core" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
+        <PointToPointInterface ifName="ppp1" areaID="0.0.0.0" interfaceOutputCost="10" />
+        <PointToPointInterface ifName="ppp2" areaID="0.0.0.0" interfaceOutputCost="10" />
+        <PointToPointInterface ifName="ppp3" areaID="0.0.0.0" interfaceOutputCost="10" />
     </Router>
 
-    <Router name="Global.branch*.router" id="auto" RFC1583Compatible="true">
-        <PointToPointInterface ifName="ppp*" areaID="0.0.0.0" interfaceCost="10" />
-        <BroadcastInterface ifName="eth*" areaID="0.0.0.0" interfaceCost="100" />
+    <!-- ===================================================== -->
+    <!-- Branch1 router                                        -->
+    <!-- ppp0 -> core                                          -->
+    <!-- ppp1 -> branch2                                      -->
+    <!-- ppp2 -> branch3                                      -->
+    <!-- eth0 -> local LAN                                     -->
+    <!-- ===================================================== -->
+
+    <Router name="Global.branch1.router" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
+        <PointToPointInterface ifName="ppp1" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <PointToPointInterface ifName="ppp2" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <BroadcastInterface ifName="eth0" areaID="0.0.0.0" interfaceOutputCost="100" routerPriority="1" />
+    </Router>
+
+    <!-- ===================================================== -->
+    <!-- Branch2 router                                        -->
+    <!-- ppp0 -> core                                          -->
+    <!-- ppp1 -> branch1                                      -->
+    <!-- ppp2 -> branch3                                      -->
+    <!-- eth0 -> local LAN                                     -->
+    <!-- ===================================================== -->
+
+    <Router name="Global.branch2.router" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
+        <PointToPointInterface ifName="ppp1" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <PointToPointInterface ifName="ppp2" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <BroadcastInterface ifName="eth0" areaID="0.0.0.0" interfaceOutputCost="100" routerPriority="1" />
+    </Router>
+
+    <!-- ===================================================== -->
+    <!-- Branch3 router                                        -->
+    <!-- ppp0 -> core                                          -->
+    <!-- ppp1 -> branch2                                      -->
+    <!-- ppp2 -> branch1                                      -->
+    <!-- eth0 -> local LAN                                     -->
+    <!-- ===================================================== -->
+
+    <Router name="Global.branch3.router" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
+        <PointToPointInterface ifName="ppp1" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <PointToPointInterface ifName="ppp2" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <BroadcastInterface ifName="eth0" areaID="0.0.0.0" interfaceOutputCost="100" routerPriority="1" />
+    </Router>
+
+    <!-- ===================================================== -->
+    <!-- External server as OSPF router                         -->
+    <!-- extServer.ppp0 -> core                                -->
+    <!-- ===================================================== -->
+
+    <Router name="Global.extServer" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
     </Router>
 
 </OSPFASConfig>

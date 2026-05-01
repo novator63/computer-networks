@@ -2,7 +2,7 @@ package simulations;
 
 import inet.node.ethernet.EthernetSwitch;
 import inet.node.ethernet.Eth100M;
-import inet.node.inet.Router;
+import inet.node.ospfv2.OspfRouter;
 import inet.node.inet.StandardHost;
 
 network Branch
@@ -14,10 +14,12 @@ network Branch
         int office3Clients = default(4);
         int office4Clients = default(3);
         @display("i=device/lan-ring");
+
     gates:
         inout pppg[];
+
     submodules:
-        router: Router {
+        router: OspfRouter {
             @display("p=100,180");
         }
 
