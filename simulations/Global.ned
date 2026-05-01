@@ -7,7 +7,7 @@ import inet.common.scenario.ScenarioManager;
 network Global
 {
     parameters:
-        @display("bgb=1000,500");
+        @display("bgb=1100,560");
 
     types:
         channel standardLine extends ned.DatarateChannel {
@@ -25,35 +25,43 @@ network Global
         }
 
         core: OspfRouter {
-            @display("p=500,240;is=vl");
+            @display("p=540,240;is=vl");
         }
 
         branch1: Branch {
-            @display("p=220,110");
+            @display("p=230,100");
         }
 
         branch2: Branch {
-            @display("p=220,240");
+            @display("p=230,250");
         }
 
         branch3: Branch {
-            @display("p=220,370");
+            @display("p=230,410");
         }
 
-        // В OSPF-варианте extServer тоже участвует в OSPF,
-        // чтобы он знал обратные маршруты к клиентам.
-        extServer: OspfRouter {
-            @display("p=800,240;i=device/server");
+        // Основной внешний сервер
+        extServer1: OspfRouter {
+            @display("p=850,180;i=device/server");
+        }
+
+        // Резервный внешний сервер
+        // Подключён не к core, а к branch3, чтобы убрать единую точку отказа по внешнему ресурсу
+        extServer2: OspfRouter {
+            @display("p=520,470;i=device/server");
         }
 
     connections:
-        // Прямые каналы филиалов к ядру
+        // Основные каналы филиалов к ядру
         branch1.pppg++ <--> standardLine <--> core.pppg++;
         branch2.pppg++ <--> standardLine <--> core.pppg++;
         branch3.pppg++ <--> standardLine <--> core.pppg++;
 
-        // Канал ядра к внешнему серверу
-        core.pppg++ <--> standardLine <--> extServer.pppg++;
+        // Основной внешний сервер через core
+        core.pppg++ <--> standardLine <--> extServer1.pppg++;
+
+        // Резервный внешний сервер через branch3
+        branch3.pppg++ <--> standardLine <--> extServer2.pppg++;
 
         // Резервное кольцо между филиалами
         branch1.pppg++ <--> standardLine <--> branch2.pppg++;

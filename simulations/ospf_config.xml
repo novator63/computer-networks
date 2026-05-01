@@ -6,11 +6,11 @@
     </Area>
 
     <!-- ===================================================== -->
-    <!-- Core router                                           -->
+    <!-- Core                                                  -->
     <!-- core.ppp0 -> branch1                                 -->
     <!-- core.ppp1 -> branch2                                 -->
     <!-- core.ppp2 -> branch3                                 -->
-    <!-- core.ppp3 -> extServer                               -->
+    <!-- core.ppp3 -> extServer1                              -->
     <!-- ===================================================== -->
 
     <Router name="Global.core" RFC1583Compatible="true">
@@ -21,11 +21,11 @@
     </Router>
 
     <!-- ===================================================== -->
-    <!-- Branch1 router                                        -->
-    <!-- ppp0 -> core                                          -->
-    <!-- ppp1 -> branch2                                      -->
-    <!-- ppp2 -> branch3                                      -->
-    <!-- eth0 -> local LAN                                     -->
+    <!-- Branch1                                               -->
+    <!-- branch1.router.ppp0 -> core                           -->
+    <!-- branch1.router.ppp1 -> branch2                        -->
+    <!-- branch1.router.ppp2 -> branch3                        -->
+    <!-- branch1.router.eth0 -> LAN                            -->
     <!-- ===================================================== -->
 
     <Router name="Global.branch1.router" RFC1583Compatible="true">
@@ -36,11 +36,11 @@
     </Router>
 
     <!-- ===================================================== -->
-    <!-- Branch2 router                                        -->
-    <!-- ppp0 -> core                                          -->
-    <!-- ppp1 -> branch1                                      -->
-    <!-- ppp2 -> branch3                                      -->
-    <!-- eth0 -> local LAN                                     -->
+    <!-- Branch2                                               -->
+    <!-- branch2.router.ppp0 -> core                           -->
+    <!-- branch2.router.ppp1 -> branch1                        -->
+    <!-- branch2.router.ppp2 -> branch3                        -->
+    <!-- branch2.router.eth0 -> LAN                            -->
     <!-- ===================================================== -->
 
     <Router name="Global.branch2.router" RFC1583Compatible="true">
@@ -51,26 +51,37 @@
     </Router>
 
     <!-- ===================================================== -->
-    <!-- Branch3 router                                        -->
-    <!-- ppp0 -> core                                          -->
-    <!-- ppp1 -> branch2                                      -->
-    <!-- ppp2 -> branch1                                      -->
-    <!-- eth0 -> local LAN                                     -->
+    <!-- Branch3                                               -->
+    <!-- branch3.router.ppp0 -> core                           -->
+    <!-- branch3.router.ppp1 -> extServer2                     -->
+    <!-- branch3.router.ppp2 -> branch2                        -->
+    <!-- branch3.router.ppp3 -> branch1                        -->
+    <!-- branch3.router.eth0 -> LAN                            -->
     <!-- ===================================================== -->
 
     <Router name="Global.branch3.router" RFC1583Compatible="true">
         <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
-        <PointToPointInterface ifName="ppp1" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <PointToPointInterface ifName="ppp1" areaID="0.0.0.0" interfaceOutputCost="10" />
         <PointToPointInterface ifName="ppp2" areaID="0.0.0.0" interfaceOutputCost="20" />
+        <PointToPointInterface ifName="ppp3" areaID="0.0.0.0" interfaceOutputCost="20" />
         <BroadcastInterface ifName="eth0" areaID="0.0.0.0" interfaceOutputCost="100" routerPriority="1" />
     </Router>
 
     <!-- ===================================================== -->
-    <!-- External server as OSPF router                         -->
-    <!-- extServer.ppp0 -> core                                -->
+    <!-- Main external server                                  -->
+    <!-- extServer1.ppp0 -> core                               -->
     <!-- ===================================================== -->
 
-    <Router name="Global.extServer" RFC1583Compatible="true">
+    <Router name="Global.extServer1" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
+    </Router>
+
+    <!-- ===================================================== -->
+    <!-- Backup external server                                -->
+    <!-- extServer2.ppp0 -> branch3                            -->
+    <!-- ===================================================== -->
+
+    <Router name="Global.extServer2" RFC1583Compatible="true">
         <PointToPointInterface ifName="ppp0" areaID="0.0.0.0" interfaceOutputCost="10" />
     </Router>
 
