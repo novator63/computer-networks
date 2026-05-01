@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<OSPFASConfig xmlns:xsi="http://w3.org" xsi:schemaLocation="OSPF.xsd">
+
+    <Area id="0.0.0.0">
+        <AddressRange address="10.0.0.0" mask="255.0.0.0" status="Advertise" />
+    </Area>
+
+    <Router name="Global.core" id="auto" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp*" areaID="0.0.0.0" interfaceCost="10" />
+        <BroadcastInterface ifName="eth*" areaID="0.0.0.0" interfaceCost="100" />
+    </Router>
+
+    <Router name="Global.branch*.router" id="auto" RFC1583Compatible="true">
+        <PointToPointInterface ifName="ppp*" areaID="0.0.0.0" interfaceCost="10" />
+        <BroadcastInterface ifName="eth*" areaID="0.0.0.0" interfaceCost="100" />
+    </Router>
+
+</OSPFASConfig>
