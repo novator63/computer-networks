@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<acl>
+    <!-- DMZ service policy: allow only required application service port. -->
+    <rule hook="localin" action="accept"
+          packetFilter="(has(tcp) &amp;&amp; tcp.destPort == 5000) || (has(udp) &amp;&amp; udp.destPort == 5000)"/>
+
+    <!-- Drop any other TCP/UDP application traffic addressed to the DMZ router itself. -->
+    <rule hook="localin" action="drop"
+          packetFilter="has(tcp) || has(udp)"/>
+</acl>

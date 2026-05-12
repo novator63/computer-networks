@@ -1,8 +1,8 @@
 package simulations;
 
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
-import inet.node.ospfv2.OspfRouter;
 import inet.common.scenario.ScenarioManager;
+import inet.node.ospfv2.OspfRouter;
 
 network Global
 {
@@ -41,13 +41,13 @@ network Global
         }
 
         // Основной внешний сервер
-        extServer1: OspfRouter {
+        extServer1: DmzOspfRouter {
             @display("p=850,180;i=device/server");
         }
 
         // Резервный внешний сервер
         // Подключён не к core, а к branch3, чтобы убрать единую точку отказа по внешнему ресурсу
-        extServer2: OspfRouter {
+        extServer2: DmzOspfRouter {
             @display("p=520,470;i=device/server");
         }
 
