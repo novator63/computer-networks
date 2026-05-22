@@ -13,6 +13,7 @@ network Branch
         int office2Clients = default(4);
         int office3Clients = default(4);
         int office4Clients = default(3);
+        double localServerLinkDatarate @unit(bps) = default(100Mbps);
         @display("i=device/lan-ring");
 
     gates:
@@ -63,7 +64,7 @@ network Branch
         router.ethg++ <--> Eth100M <--> mainSwitch.ethg++;
 
         for i=0..numLocalServers-1 {
-            mainSwitch.ethg++ <--> Eth100M <--> localServer[i].ethg++;
+            mainSwitch.ethg++ <--> { datarate = parent.localServerLinkDatarate; delay = 50ns; } <--> localServer[i].ethg++;
         }
 
         office1.ethg++ <--> Eth100M <--> mainSwitch.ethg++;
