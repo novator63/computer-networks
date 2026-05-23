@@ -9,3 +9,4 @@
 /out
 /computer-networks_dbg
 *.anf
+.venv
